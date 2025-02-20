@@ -39,13 +39,13 @@ namespace MovieCollection.Controllers
             return View("AddMovie", response);
         }
 
-        public IActionResult MovieList()
+        public IActionResult ViewMovies()
         {
             //Linq query to sort the movies by title
-            var movies = _context.Movies
+            var movie = _context.Movies
                 .OrderBy(x => x.Title).ToList();
 
-            return View(movies);
+            return View(movie);
         }
     }
 }

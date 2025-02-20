@@ -1,31 +1,33 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model List<MovieCollection.Models.Movie>
 
-@model Movie
+<h2>Movie Collection</h2>
 
-<table>
-	<thead>
-		<td>Movie Title</td>
-		<td>Movie Category<td>
-		<td>Movie Year</td>
-		<td>Movie Director</td>
-		<td>Movie Rating</td>
-		<td>Edited Status</td>
-		<td>Lent To</td>
-		<td>Movie Notes</td>
-	</thead>
-
-	<tbody>
-		<td>@Model.Title</td>
-		<td>@Model.Category</td>
-		<td>@Model.Year</td>
-		<td>@Model.Director</td>
-		<td>@Model.Rating</td>
-		<td>@Model.Edited</td>
-		<td>@Model.LentTo</td>
-		<td>@Model.Notes</td>
-	</tbody>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Movie Title</th>
+            <th>Movie Category</th>
+            <th>Movie Year</th>
+            <th>Movie Director</th>
+            <th>Movie Rating</th>
+            <th>Edited Status</th>
+            <th>Lent To</th>
+            <th>Movie Notes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movie in Model)
+        {
+            <tr>
+                <td>@movie.Title</td>
+                <td>@movie.Category</td>
+                <td>@movie.Year</td>
+                <td>@movie.Director</td>
+                <td>@movie.Rating</td>
+                <td>@(movie.Edited ? "Yes" : "No")</td>
+                <td>@movie.LentTo</td>
+                <td>@movie.Notes</td>
+            </tr>
+        }
+    </tbody>
 </table>
