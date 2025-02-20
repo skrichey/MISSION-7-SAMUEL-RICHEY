@@ -38,6 +38,15 @@ namespace MovieCollection.Controllers
             }
             return View("AddMovie", response);
         }
+
+        public IActionResult MovieList()
+        {
+            //Linq query to sort the movies by title
+            var movies = _context.Movies
+                .OrderBy(x => x.Title).ToList();
+
+            return View(movies);
+        }
     }
 }
 

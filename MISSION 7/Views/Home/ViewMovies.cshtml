@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model Movie
+
+<table>
+	<thead>
+		<td>Movie Title</td>
+		<td>Movie Category<td>
+		<td>Movie Year</td>
+		<td>Movie Director</td>
+		<td>Movie Rating</td>
+		<td>Edited Status</td>
+		<td>Lent To</td>
+		<td>Movie Notes</td>
+	</thead>
+
+	<tbody>
+		<td>@Model.Title</td>
+		<td>@Model.Category</td>
+		<td>@Model.Year</td>
+		<td>@Model.Director</td>
+		<td>@Model.Rating</td>
+		<td>@Model.Edited</td>
+		<td>@Model.LentTo</td>
+		<td>@Model.Notes</td>
+	</tbody>
+</table>

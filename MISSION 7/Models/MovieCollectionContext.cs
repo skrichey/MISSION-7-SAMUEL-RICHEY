@@ -2,9 +2,9 @@
 
 namespace MovieCollection.Models
 {
-    public class MovieCollectionContext : DbContext
+    public class MovieCollectionContext : DbContext //Liaison from the app to the database
     {
-        public MovieCollectionContext(DbContextOptions<MovieCollectionContext> options) : base(options)
+        public MovieCollectionContext(DbContextOptions<MovieCollectionContext> options) : base(options) //Constructor
         {
         }
 
