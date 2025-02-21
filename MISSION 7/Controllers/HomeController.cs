@@ -34,6 +34,7 @@ namespace MovieCollection.Controllers
             {
                 _context.Movies.Add(response);
                 _context.SaveChanges();
+
                 return View("Confirmation", response);
             }
             return View("AddMovie", response);
@@ -46,6 +47,45 @@ namespace MovieCollection.Controllers
                 .OrderBy(x => x.Title).ToList();
 
             return View(movie);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var recordToEdit = _context.Movies
+                .Single(movie => movie.MovieId == id);
+
+            return View("AddMovie", recordToEdit);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Movie updatedResponse)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Movies.Update(updatedResponse);
+                _context.SaveChanges();
+                return RedirectToAction("ViewMovies");
+            }
+            return View("AddMovie", updatedResponse);
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var recordToDelete = _context.Movies
+                .Single(movie => movie.MovieId == id);
+
+            return View("Delete", recordToDelete);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Movie movie)
+        {
+            _context.Movies.Remove(movie);
+            _context.SaveChanges();
+
+            return RedirectToAction("ViewMovies");
         }
     }
 }
