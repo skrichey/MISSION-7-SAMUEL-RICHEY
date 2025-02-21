@@ -1,5 +1,4 @@
-﻿// AddMovie.cshtml
-@model MovieCollection.Models.Movie
+﻿@model MovieCollection.Models.Movie
 
 @{
     ViewData["Title"] = "Add a Movie";
@@ -12,33 +11,63 @@
     <input type="hidden" asp-for="MovieId" />
 
     <label asp-for="Title">Title:</label>
-    <input asp-for="Title" required />
+    <input asp-for="Title" class="form-control" required />
     <br />
-    <label asp-for="Category">Category:</label>
-    <input asp-for="Category" required />
+
+    <label asp-for="CategoryId">Category:</label>
+    <select asp-for="CategoryId" class="form-control">
+        <option value="">Select a Category</option>
+        @if (ViewBag.Categories != null)
+        {
+            @foreach (Category c in ViewBag.Categories)
+            {
+                <option value="@c.CategoryId">@c.CategoryName</option>
+            }
+        }
+    </select>
+    <span asp-validation-for="CategoryId" class="text-danger"></span>
     <br />
+
     <label asp-for="Year">Year:</label>
-    <input asp-for="Year" type="number" required />
+    <input asp-for="Year" type="number" class="form-control" required min="1888" />
+    <span asp-validation-for="Year" class="text-danger"></span>
     <br />
+
     <label asp-for="Director">Director:</label>
-    <input asp-for="Director" required />
+    <input asp-for="Director" class="form-control" />
+    <span asp-validation-for="Director" class="text-danger"></span>
     <br />
+
     <label asp-for="Rating">Rating:</label>
-    <select asp-for="Rating">
+    <select asp-for="Rating" class="form-control">
+        <option value="">Select a Rating</option>
         <option>G</option>
         <option>PG</option>
         <option>PG-13</option>
         <option>R</option>
     </select>
+    <span asp-validation-for="Rating" class="text-danger"></span>
     <br />
+
     <label asp-for="Edited">Edited:</label>
     <input asp-for="Edited" type="checkbox" />
+    <span asp-validation-for="Edited" class="text-danger"></span>
     <br />
+
     <label asp-for="LentTo">Lent To:</label>
-    <input asp-for="LentTo" />
+    <input asp-for="LentTo" class="form-control" />
     <br />
+
+    <label asp-for="CopiedToPlex">Copied To Plex:</label>
+    <input asp-for="CopiedToPlex" type="checkbox" required />
+    <span asp-validation-for="CopiedToPlex" class="text-danger"></span>
+    <br />
+
     <label asp-for="Notes">Notes:</label>
-    <input asp-for="Notes" maxlength="25" />
+    <input asp-for="Notes" maxlength="25" class="form-control" />
+    <span asp-validation-for="Notes" class="text-danger"></span>
     <br />
-    <button type="submit">Submit</button>
+
+    <button type="submit" class="btn btn-primary mt-2">Submit</button>
 </form>
+

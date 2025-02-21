@@ -10,8 +10,8 @@ using MovieCollection.Models;
 namespace MISSION_7.Migrations
 {
     [DbContext(typeof(MovieCollectionContext))]
-    [Migration("20250220032318_Initial")]
-    partial class Initial
+    [Migration("20250221210111_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,18 +19,34 @@ namespace MISSION_7.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
 
-            modelBuilder.Entity("MovieCollection.Models.Movie", b =>
+            modelBuilder.Entity("MovieCollection.Models.Category", b =>
                 {
-                    b.Property<int>("MovieID")
+                    b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
+                    b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("MovieCollection.Models.Movie", b =>
+                {
+                    b.Property<int>("MovieId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("CopiedToPlex")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Director")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Edited")
@@ -44,7 +60,6 @@ namespace MISSION_7.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Rating")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
@@ -54,9 +69,27 @@ namespace MISSION_7.Migrations
                     b.Property<int>("Year")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("MovieID");
+                    b.HasKey("MovieId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Movies");
+                });
+
+            modelBuilder.Entity("MovieCollection.Models.Movie", b =>
+                {
+                    b.HasOne("MovieCollection.Models.Category", "Category")
+                        .WithMany("Movies")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("MovieCollection.Models.Category", b =>
+                {
+                    b.Navigation("Movies");
                 });
 #pragma warning restore 612, 618
         }

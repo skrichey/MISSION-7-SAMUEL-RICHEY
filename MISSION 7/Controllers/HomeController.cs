@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MovieCollection.Models;
 
 namespace MovieCollection.Controllers
@@ -24,39 +25,55 @@ namespace MovieCollection.Controllers
         [HttpGet]
         public IActionResult AddMovie()
         {
+            ViewBag.Categories = _context.Categories
+                .OrderBy(x => x.CategoryName)
+                .ToList();
+
             return View();
         }
+
 
         [HttpPost]
         public IActionResult AddMovie(Movie response)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Movies.Add(response);
-                _context.SaveChanges();
+            _context.Movies.Add(response);
+            _context.SaveChanges();
 
-                return View("Confirmation", response);
-            }
-            return View("AddMovie", response);
+            return View("Confirmation", response);
+
         }
 
         public IActionResult ViewMovies()
         {
-            //Linq query to sort the movies by title
-            var movie = _context.Movies
-                .OrderBy(x => x.Title).ToList();
+            // Fetch movies and include category information
+            var movies = _context.Movies
+                .Include(m => m.Category) // Ensures we pull the category name
+                .OrderBy(m => m.Title)
+                .ToList();
 
-            return View(movie);
+            return View(movies);
         }
+
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
             var recordToEdit = _context.Movies
-                .Single(movie => movie.MovieId == id);
+                .Include(m => m.Category) // Ensure we fetch the category info
+                .SingleOrDefault(movie => movie.MovieId == id);
 
-            return View("AddMovie", recordToEdit);
+            if (recordToEdit == null)
+            {
+                return NotFound(); // Handle case where movie does not exist
+            }
+
+            ViewBag.Categories = _context.Categories
+                .OrderBy(x => x.CategoryName)
+                .ToList();
+
+            return View("AddMovie", recordToEdit); // Reuse AddMovie view for editing
         }
+
 
         [HttpPost]
         public IActionResult Edit(Movie updatedResponse)
@@ -74,10 +91,17 @@ namespace MovieCollection.Controllers
         public IActionResult Delete(int id)
         {
             var recordToDelete = _context.Movies
-                .Single(movie => movie.MovieId == id);
+                .Include(m => m.Category) // Ensures category info is available
+                .SingleOrDefault(movie => movie.MovieId == id);
+
+            if (recordToDelete == null)
+            {
+                return NotFound(); // Handle case where movie does not exist
+            }
 
             return View("Delete", recordToDelete);
         }
+
 
         [HttpPost]
         public IActionResult Delete(Movie movie)
